@@ -11,7 +11,7 @@ class MrBlit {
         try {
             const response = await fetch(url, {
                     method: 'GET',
-                    mode: 'no-cors',
+                    //mode: 'no-cors',
                     timeout: this.TimeOutOnSecond * 1000 // Timeout in milliseconds
                 }).catch((error) => {
                     const resultDivMrBlit = document.getElementById('mrBlitResultError');
@@ -23,9 +23,9 @@ class MrBlit {
             if (response.ok) {
                 const data = await response.json();
 
-                if (data.Trains.some(train =>
-                    train.Prices.some(price =>
-                        price.Classes.some(cls => cls.Capacity > 0)
+                if (data.trains.some(train =>
+                    train.prices.some(price =>
+                        price.classes.some(cls => cls.capacity > 0)
                     )
                 )) {
                     return true;
@@ -75,7 +75,7 @@ class Alibaba {
         try {
             const response = await fetch(url, {
                 method: 'GET',
-                mode: 'no-cors',
+                //mode: 'no-cors',
                 timeout: this.TimeOutOnSecond * 1000 // Timeout in milliseconds
             }).catch((error) => {
                 const resultDivAlibaba = document.getElementById('alibabaResultError');
@@ -154,15 +154,15 @@ async function checkTrainAvailability() {
         // Increment counter on each API call
         counter++;
 
-        const currentTime = new Date().toLocaleTimeString('en-GB', {hour12: false}); // Get the current time in 24-hour format
-
         // Check for availability on MrBlit
         const isAvailableMrBlit = await mrBlit.isExist(trainInfoMrBlit);
         const resultDivMrBlit = document.getElementById('mrBlitResult');
 
         if (isAvailableMrBlit) {
+            const currentTimeMrBlit = new Date().toLocaleTimeString('en-GB', {hour12: false});
+
             // Set text to red and bold
-            resultDivMrBlit.innerHTML = `شناسه: ${counter} زمان: ${currentTime} - موجود شد !!!`;
+            resultDivMrBlit.innerHTML = `شناسه: ${counter} زمان: ${currentTimeMrBlit} - موجود شد !!!`;
             resultDivMrBlit.style.color = "red";
             resultDivMrBlit.style.fontWeight = "bold";
 
@@ -175,7 +175,9 @@ async function checkTrainAvailability() {
             // Change the browser tab title
             document.title = "Train Available on MrBlit!";
         } else {
-            resultDivMrBlit.innerHTML = `شناسه: ${counter} زمان: ${currentTime} - موجود نیست`;
+            const currentTimeMrBlit = new Date().toLocaleTimeString('en-GB', {hour12: false});
+            
+            resultDivMrBlit.innerHTML = `شناسه: ${counter} زمان: ${currentTimeMrBlit} - موجود نیست`;
             resultDivMrBlit.style.color = "black";
             resultDivMrBlit.style.fontWeight = "normal";
         }
@@ -185,8 +187,10 @@ async function checkTrainAvailability() {
         const resultDivAlibaba = document.getElementById('alibabaResult');
 
         if (isAvailableAlibaba) {
+            const currentTimeMrAlibaba = new Date().toLocaleTimeString('en-GB', {hour12: false});
+            
             // Set text to red and bold
-            resultDivAlibaba.innerHTML = `شناسه: ${counter} زمان: ${currentTime} - موجود شد !!!`;
+            resultDivAlibaba.innerHTML = `شناسه: ${counter} زمان: ${currentTimeMrAlibaba} - موجود شد !!!`;
             resultDivAlibaba.style.color = "red";
             resultDivAlibaba.style.fontWeight = "bold";
 
@@ -199,11 +203,15 @@ async function checkTrainAvailability() {
             // Change the browser tab title
             document.title = "Train Available on Alibaba!";
         } else {
-            resultDivAlibaba.innerHTML = `شناسه: ${counter} زمان: ${currentTime} - موجود نیست`;
+            const currentTimeMrAlibaba = new Date().toLocaleTimeString('en-GB', {hour12: false});
+            
+            resultDivAlibaba.innerHTML = `شناسه: ${counter} زمان: ${currentTimeMrAlibaba} - موجود نیست`;
             resultDivAlibaba.style.color = "black";
             resultDivAlibaba.style.fontWeight = "normal";
         }
 
+        const currentTime = new Date().toLocaleTimeString('en-GB', {hour12: false});
+        
         // Log to console
         console.log(`Call #${counter} - Time: ${currentTime}`);
 
