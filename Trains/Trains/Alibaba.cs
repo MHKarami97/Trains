@@ -63,7 +63,13 @@ public class Alibaba
         catch (FlurlHttpException e)
         {
             var body = await e.GetResponseStringAsync();
-            throw new Exception(body);
+            Console.WriteLine("-----------------");
+            Console.WriteLine(e.Message);
+            Console.OutputEncoding = Encoding.UTF8;
+            Console.WriteLine(body);
+            Console.WriteLine("-----------------");
+
+            return false;
         }
     }
 

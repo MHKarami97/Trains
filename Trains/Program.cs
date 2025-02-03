@@ -6,6 +6,7 @@ class Program
 {
     static async Task Main()
     {
+        const int waitOnSecond = 10;
         Console.WriteLine("Program started...");
         const string apiUrlMrBlit = "https://train.mrbilit.com/api/GetAvailable/v2";
         const string apiUrlAlibaba = "https://ws.alibaba.ir/api/v2/train/available/";
@@ -71,9 +72,9 @@ class Program
                     Helper.Alert("Alibaba");
                 }
 
-                Console.WriteLine($"Counter: {++counter}, Date: {DateTime.Now:HH:mm:sss}");
+                Console.WriteLine($"Id: {++counter}, Time: {DateTime.Now:HH:mm:ss.fff}");
 
-                await Task.Delay(TimeSpan.FromSeconds(5), token);
+                await Task.Delay(TimeSpan.FromSeconds(waitOnSecond), token);
             }
         }
         catch (TaskCanceledException)
